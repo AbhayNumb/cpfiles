@@ -1,0 +1,55 @@
+public static class segTree {
+        private long[] seg;
+
+        public segTree(int size) {
+            seg = new long[4 * size];
+        }
+
+        // segment_index (0) ,low_for_arr (0), high_for_arr,arr (arr.length-1)
+        public void build(int ind, int low, int high, long[] arr) {
+            if (low == high) {
+                seg[ind] = arr[low];
+                return;
+            }
+            int mid = (low + high) / 2;
+            build(2 * ind + 1, low, mid, arr);
+            build(2 * ind + 2, mid + 1, high, arr);
+            seg[ind] = mer(seg[2 * ind + 1], seg[2 * ind + 2]);
+        }
+
+        // ind_for_seg (0) , low_for_arr (0) , high_for_arr (arr.length-1) , l=>given
+        // query left, r=>given query right
+        public long query(int ind, int low, int high, int l, int r) {
+            // NO OVERLAP
+            if (r < low || high < l) {
+                return Long.MAX_VALUE;
+            }
+            if (low >= l && high <= r) {
+                return seg[ind];
+            }
+            int mid = (low + high) / 2;
+            long left = query(2 * ind + 1, low, mid, l, r);
+            long right = query(2 * ind + 2, mid + 1, high, l, r);
+            return mer(left, right);
+        }
+
+        public long mer(long left, long right) {
+            return Math.min(left, right);
+        }
+
+        // ind_for_seg (0) , low_for_arr (0) ,high_for_arr (arr.length-1) ,
+        // i->update_ind_for_arr,val->updated_val_for_arr
+        public void update(int ind, int low, int high, int i, int val) {
+            if (low == high) {
+                seg[ind] = val;
+                return;
+            }
+            int mid = (low + high) / 2;
+            if (i <= mid) {
+                update(2 * ind + 1, low, mid, i, val);
+            } else {
+                update(2 * ind + 2, mid + 1, high, i, val);
+            }
+            seg[ind] = mer(seg[2 * ind + 1], seg[2 * ind + 2]);
+        }
+    }
