@@ -1,0 +1,88 @@
+public static int [] maximumDistance(int v, int e, int src, int[][] edges) {
+    // code here
+    ArrayList<ArrayList<pair>>adj=new ArrayList<>();
+    for(int i=0;i<v;i++){
+        adj.add(new ArrayList<>());
+    }
+    int[][]wt=new int[v][v];
+    for(int i=0;i<v;i++){
+        for(int j=0;j<v;j++){
+            wt[i][j]=Integer.MIN_VALUE;
+        }
+    }
+    for(int []ed:edges){
+        adj.get(ed[0]).add(new pair(ed[1],ed[2]));
+        wt[ed[0]][ed[1]]=ed[2];
+    }
+    // System.out.println(adj.get(src));
+    
+    int[]sortedorder=topological(v,adj);
+    // System.out.println(Arrays.toString(sortedorder));
+    int[]dp=new int[v];
+    Arrays.fill(dp,0);
+    ArrayList<pair>list=new ArrayList<>();
+    for(int i=0;i<sortedorder.length;i++){
+        list.add(new pair(sortedorder[i],Integer.MIN_VALUE));
+    }
+    int st=0;
+    for(st=0;st<sortedorder.length;st++){
+        if(list.get(st).ch==src){
+            break;
+        }
+    }
+    list.get(st).wt=0;
+    while(st<sortedorder.length){
+        for(int j=st+1;j<sortedorder.length;j++){
+            int ele1=list.get(st).ch;
+            int ele2=list.get(j).ch;
+            // System.out.println(ele1+" "+ele2+" "+wt[ele1][ele2]);
+            if((wt[ele1][ele2]!=Integer.MIN_VALUE && list.get(st).wt!=Integer.MIN_VALUE)){
+                list.get(j).wt=Math.max(list.get(j).wt,list.get(st).wt+wt[ele1][ele2]);
+            }
+        }
+        st++;
+    }
+    for(pair p:list){
+        dp[p.ch]=p.wt;
+    }
+    // System.out.println(list);
+    return dp;
+}
+static int [] topological(int n,ArrayList<ArrayList<pair>>adj){
+    int[]indegree=new int[n];
+    for(ArrayList<pair> pval:adj){
+        for(pair p:pval){
+            indegree[p.ch]++;
+        }
+    }
+    Stack<Integer>st=new Stack<>();
+    for(int i=0;i<n;i++){
+        if(indegree[i]==0){
+            st.push(i);
+        }
+    }
+    int[]ans=new int[n];
+    int idx=0;
+    while(st.size()!=0){
+        // System.out.println(st);
+        int rem=st.pop();
+        ans[idx++]=rem;
+        for(pair p:adj.get(rem)){
+            indegree[p.ch]--;
+            if(indegree[p.ch]==0){
+                st.push(p.ch);
+            }
+        }
+    }
+    return ans;
+}
+static class pair{
+    int ch,wt;
+    pair(int ch,int wt){
+        this.ch=ch;
+        this.wt=wt;
+    }
+    public String toString(){
+        return "{ "+this.ch+"   -"+this.wt+" }\n";
+    }
+}

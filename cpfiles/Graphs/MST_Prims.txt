@@ -1,0 +1,46 @@
+//minimum spanning tree
+static int minSpanningTree(int V, int E, int edges[][]){
+    // Code Here. 
+    ArrayList<ArrayList<pair>>graph=new ArrayList<>();
+    for(int i=0;i<V;i++){
+        graph.add(new ArrayList<>());
+    }
+    for(int i=0;i<edges.length;i++){
+        int u=edges[i][0];
+        int v=edges[i][1];
+        int wt=edges[i][2];
+        graph.get(u).add(new pair(u,v,wt));
+        graph.get(v).add(new pair(v,u,wt));
+    }
+    PriorityQueue<pair>pq=new PriorityQueue<>();
+    pq.add(new pair(0,-1,0));
+    int ans=0;
+    boolean[]visited=new boolean[V];
+    while(pq.size()!=0){
+        pair rem=pq.remove();
+        if(visited[rem.ch]){
+            continue;
+        }
+        visited[rem.ch]=true;
+        ans+=rem.wt;
+        for(pair p:graph.get(rem.ch)){
+            if(visited[p.par]==false){
+                pq.add(new pair(p.par,rem.ch,p.wt));
+            }
+        }
+    }
+    return ans;
+}
+static class pair implements Comparable<pair>{
+    int ch;
+    int par;
+    int wt;
+    pair(int ch,int par,int wt){
+        this.ch=ch;
+        this.par=par;
+        this.wt=wt;
+    }
+    public int compareTo(pair o){
+        return this.wt-o.wt;
+    }
+}

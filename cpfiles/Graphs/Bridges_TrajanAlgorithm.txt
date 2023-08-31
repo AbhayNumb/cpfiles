@@ -1,0 +1,28 @@
+//if any edge removed and it graphs break into more component
+//tin[](time of insertion)-DFS time insert on
+//low[] -lowest time insertion of all adjacent nodes aprt from parent
+static void dfs(int node,int par,boolean[]vis,ArrayList<ArrayList<Integer>> adj,ArrayList<ArrayList<Integer>>bridge,int[]tin,int[]low){
+    vis[node]=true;
+    tin[node]=timer;
+    low[node]=timer;
+    timer++;
+    for(int val:adj.get(node)){
+        if(val==par){
+            continue;
+        }
+        if(vis[val]==false){
+            dfs(val,node,vis,adj,bridge,tin,low);
+            low[node]=Math.min(low[node],low[val]);
+            //node-------val
+            if(low[val]>tin[node]){
+                ArrayList<Integer>add=new ArrayList<>();
+                add.add(val);
+                add.add(node);
+                bridge.add(add);
+            }
+        }else{
+            low[node]=Math.min(low[node],low[val]);
+        }
+     }
+}
+static int timer=1;

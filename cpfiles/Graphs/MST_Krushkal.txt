@@ -1,0 +1,63 @@
+//minimum spanning tree
+static int spanningTree(int V, int E, int edges[][]){
+	// Code Here. 
+	Dsu dsu=new Dsu(V);
+	ArrayList<pair>al=new ArrayList<>();
+	for(int i=0;i<edges.length;i++){
+	    al.add(new pair(edges[i][0],edges[i][1],edges[i][2]));
+	}
+	Collections.sort(al);
+	int ans=0;
+	for(pair p:al){
+	    if(dsu.union(p.a,p.b)){
+	        ans+=p.wt;   
+	    }
+	}
+	return ans;
+}
+static class pair implements Comparable<pair>{
+	int a,b,wt;
+	pair(int a, int b,int wt){
+	    this.a=a;
+	    this.b=b;this.wt=wt;
+	}
+	public int compareTo(pair o){
+	    return this.wt-o.wt;
+	}
+}
+public static class Dsu{
+    int[]rank;
+    int[] par;
+    Dsu(int n){
+        rank=new int[n];
+        par=new int[n];
+        for(int i=0;i<n;i++){
+            par[i]=i;
+            rank[i]=1;
+        }
+    }
+    public boolean union(int x,int y){
+        int lx=find(x);
+        int ly=find(y);
+        if(lx!=ly){
+            if(rank[lx]>rank[ly]){
+                par[ly]=lx;
+            }else if(rank[lx]<rank[ly]){
+                par[lx]=ly;
+            }else{
+                par[lx]=ly;
+                rank[ly]++;
+            }
+            return true;
+        }
+        return false;
+    }
+    public int find(int x){
+        if(par[x]==x){
+            return x;
+        }
+        int temp=find(par[x]);
+        par[x]=temp;
+        return temp;
+    }
+}

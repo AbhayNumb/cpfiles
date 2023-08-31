@@ -1,0 +1,32 @@
+//for DAG
+static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) {
+    // add your code here
+    int[]indegree=new int[V];
+    for(ArrayList<Integer>al:adj){
+        for(int val:al){
+            indegree[val]++;
+        }
+    }
+    Stack<Integer>st=new Stack<>();
+    for(int i=0;i<V;i++){
+        if(indegree[i]==0){
+            st.push(i);
+        }
+    }
+    int []ans=new int[V];
+    int idx=0;
+    while(st.size()!=0){
+        int rem=st.pop();
+        ans[idx++]=rem;
+        for(int val:adj.get(rem)){
+            indegree[val]--;
+            if(indegree[val]==0){
+                st.push(val);
+            }
+        }
+    }
+    if(idx!=V){
+        //"Not a DAG"
+    }
+    return ans; 
+}

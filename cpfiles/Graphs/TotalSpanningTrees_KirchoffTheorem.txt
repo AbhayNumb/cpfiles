@@ -1,0 +1,9 @@
+spanning tree-tree which has all vertices covered with minimum possible number of edges
+if graph is complete then total spanning trees is V^(V-2) // V is vertices
+if graph may not be complete then 
+make two matrix 
+first is degree matrix that has degree of ith element stored at (i,i)
+second is adjacency matrix of 0s and 1s
+
+laplacian matrix=matrix1-matrix2
+total spanning tree will be cofactor of any element

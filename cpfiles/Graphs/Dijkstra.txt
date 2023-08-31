@@ -1,0 +1,43 @@
+//shortest-path problem for any weighted, directed graph with non-negative weights
+static int[] dijkstra(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj, int S)
+    {
+        // Write your code here
+        PriorityQueue<pair>pq=new PriorityQueue<>();
+        pq.add(new pair(S,-1,0));
+        boolean[]vis=new boolean[V];
+        int[]ans=new int[V];
+        while(pq.size()!=0){
+            pair rem=pq.remove();
+            if(vis[rem.a]){
+                continue;
+            }
+            ans[rem.a]=rem.wsf;
+            vis[rem.a]=true;
+            // System.out.println(pq);
+            for(ArrayList<Integer>al:adj.get(rem.a)){
+                // System.out.println(al+" "+Arrays.toString(vis));
+                int b=al.get(0);
+                int wt=al.get(1);
+                if(vis[b]==false){
+                    pq.add(new pair(b,rem.a,rem.wsf+wt));
+                }
+            }
+        }
+        return ans;
+    }
+    static class pair implements Comparable<pair>{
+        int a;
+        int b;
+        int wsf;
+        pair(int a,int b,int wsf){
+            this.b=b;
+            this.a=a;
+            this.wsf=wsf;
+        }
+        public int compareTo(pair o){
+            return this.wsf-o.wsf;
+        }
+        public String toString(){
+            return this.a+"-"+this.b+"-"+this.wsf+"\n";
+        }
+    }

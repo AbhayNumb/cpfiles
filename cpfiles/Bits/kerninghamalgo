@@ -1,0 +1,38 @@
+//right most set bit
+x=A 1's & 0's 1 B 0's
+
+******FORMULA*******
+rightmost setbit =x&(2's complementof x)
+
+~x   ---->1's complement flip 1 to 0 and 0 to 1
+~x+1 ---->2's complement 
+
+~x  = A 0's & 1's 0 B 1's
+~x+1= A 0's & 1's 1 B 0's
+
+******CODE********
+COUNT SET BITS
+METHOD 1
+static int setBits(int N) {
+    // code here
+    int ans=0;
+    while(N!=0){
+        N=N-(N);
+        ans++;
+    }
+    return ans;
+}
+
+
+
+
+METHOD 2
+static int setBits(int N) {
+    // code here
+    int ans=0;
+    while(N!=0){
+        N=N-(N&((~N)+1));
+        ans++;
+    }
+    return ans;
+}

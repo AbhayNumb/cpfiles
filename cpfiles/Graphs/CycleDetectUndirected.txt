@@ -1,0 +1,39 @@
+public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+    // Code here
+    Queue<pair>qu=new ArrayDeque<>();
+    boolean[]vis=new boolean[V];
+    for(int i=0;i<V;i++){
+        if(vis[i]){
+            continue;
+        }
+        vis[i]=true;
+        qu.add(new pair(i,-1));
+        while(qu.size()!=0){
+            // System.out.println(qu);
+            pair rem=qu.remove();
+            for(int val:adj.get(rem.a)){
+                if(vis[val]){
+                    // System.out.println(rem+" "+val);
+                    if(val!=rem.par){
+                        return true;
+                    }
+                }else{
+                    vis[val]=true;
+                    qu.add(new pair(val,rem.a));
+                }
+            }
+        }
+    }
+    return false;
+}
+class pair{
+    int a;
+    int par;
+    pair(int a,int par){
+        this.a=a;
+        this.par=par;
+    }
+    public String toString(){
+        return this.a+"-"+this.par;
+    }
+}

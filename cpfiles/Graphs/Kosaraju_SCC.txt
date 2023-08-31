@@ -1,0 +1,43 @@
+public int kosaraju(int V, ArrayList<ArrayList<Integer>> adj){
+    boolean[]vis=new boolean[V];
+    Stack<Integer>st=new Stack<>();
+    for(int i=0;i<V;i++){
+        if(vis[i]==false){
+            dfs1(i,adj,st,vis);
+        }
+    }
+    ArrayList<ArrayList<Integer>> revadj=new ArrayList<>();
+    for(int i=0;i<V;i++)revadj.add(new ArrayList<>());
+    for(int i=0;i<V;i++){
+        for(int val:adj.get(i)){
+            revadj.get(val).add(i);
+        }
+    }
+    vis=new boolean[V];
+    int count=0;
+    while(st.size()!=0){
+        int rem=st.pop();
+        if(vis[rem]==false){
+            count++;
+            dfs2(revadj,vis,rem);
+        }
+    }
+    return count;
+}
+public void dfs2(ArrayList<ArrayList<Integer>>revadj,boolean[]vis,int rem){
+    vis[rem]=true;
+    for(int val:revadj.get(rem)){
+        if(vis[val]==false){
+            dfs2(revadj,vis,val);
+        }
+    }
+}
+public void dfs1(int node,ArrayList<ArrayList<Integer>>adj,Stack<Integer>st,boolean[]vis){
+    vis[node]=true;
+    for(int val:adj.get(node)){
+        if(vis[val]==false){
+            dfs1(val,adj,st,vis);
+        }
+    }
+    st.push(node);
+}

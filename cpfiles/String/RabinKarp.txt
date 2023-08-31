@@ -1,0 +1,35 @@
+public static ArrayList<Integer> rabinKarp(String str,String pat){
+    long p=31;
+    long mod=1000000007;
+    long dhv=pat.charAt(0)-'a'+1;
+    long pow=p;
+    for(int i=1;i<pat.length();i++){
+        dhv=(dhv+(pat.charAt(i)-'a'+1)*pow)%mod;
+        pow=(pow*p)%mod;
+    }
+    long[]pa=new long[str.length()];
+    long[]dp=new long[str.length()];
+    dp[0]=str.charAt(0)-'a'+1;
+    pa[0]=1;
+    pow=p;
+    for(int i=1;i<str.length();i++){
+        dp[i]=(dp[i-1]+(str.charAt(i)-'a'+1)*pow)%mod;
+        pa[i]=pow;
+        pow=(pow*p)%mod;
+    }
+    int sp=0;
+    int ep=pat.length()-1;
+    ArrayList<Integer>al=new ArrayList<>();
+    while(ep<str.length()){
+        long win=dp[ep];
+        if(sp>0){
+            win=(win-dp[sp-1]+mod)%mod;
+        }
+        if(win==(dhv*pa[sp])%mod){
+            al.add(sp);
+        }
+        sp++;
+        ep++;
+    }
+    return al;
+}

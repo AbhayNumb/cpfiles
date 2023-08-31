@@ -1,0 +1,66 @@
+static class kthancestor {
+    int[][] dp;
+    int LOG;
+    public int lca(int u,int v,int[]level,int[]parent){
+        if(level[u]>level[v]){
+            int t=u;
+            u=v;
+            v=t;
+        }
+        int k=level[v]-level[u];
+        for(int i=LOG-1;i>=0;i--){
+            int mask=1<<i;
+            if((k&mask)!=0){
+                v=dp[i][v];
+            }
+        }
+        if(v==u){
+            return u;
+        }
+        for(int i=LOG-1;i>=0;i--){
+            int up=dp[i][u];
+            int vp=dp[i][v];
+             if(up!=vp){
+                u=up;
+                v=vp;
+            }
+        }
+        u=parent[u];
+        return u;
+    }
+    public kthancestor(int n, int[] parent) {
+        while (1 << (LOG) <= n) {
+            LOG++;
+        }
+        dp = new int[LOG][n];
+        for (int i = 0; i < LOG; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0) {
+                    dp[i][j] = parent[j];
+                } else {
+                    // I want the parent of j who is at 2 power i dist
+                    // I want the parent of parent of j who is at 2 power i-1 dist
+                    if (dp[i - 1][j] != -1) {
+                        dp[i][j] = dp[i - 1][dp[i - 1][j]];
+                    } else {
+                        dp[i][j] = -1;
+                    }
+                }
+            }
+        }
+    }
+    public int getKthAncestor(int node, int k) {
+        int bit = 0;
+        while (k != 0) {
+            if (node == -1) {
+                return -1;
+            }
+            if ((k & 1) != 0) {
+                node = dp[bit][node];
+            }
+            k = k >> 1;
+            bit++;
+        }
+        return node;
+    }
+}
