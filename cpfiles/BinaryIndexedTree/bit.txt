@@ -1,0 +1,35 @@
+static void fenwicktreen(int[]arr){
+    int[]prefix=new int[arr.length+1];
+    farr=new int[arr.length+1];
+    for(int i=1;i<prefix.length;i++){
+        prefix[i]=prefix[i-1]+arr[i-1];
+    }
+    for(int i=1;i<prefix.length){
+        int idash=i-(i&(-i));
+        farr[i]=prefix[i]-prefix[idash];
+    }
+}
+static farr[];
+static void fenwicktreelogn(int[]arr){
+    farr=new int[arr.length+1];
+    for(int i=1;i<farr.length;i++){
+        update(i,arr[i]);
+    }
+}
+static int query(int l,int r){
+    return prefixsum[r]-prefixsum[l]
+}
+static int prefixsum(int idx){
+    int sum=0;
+    while(idx>0){
+        sum+=farr[idx];
+        idx-=(idx&(-idx));
+    }
+    return sum;
+}
+static void update(int idx,int delta){
+    while(idx<farr.length){
+        farr[idx]+=delta;
+        idx+=(idx&(-idx)); 
+    }
+}
