@@ -17,7 +17,7 @@ static void fenwicktreelogn(int[]arr){
     }
 }
 static int query(int l,int r){
-    return prefixsum[r]-prefixsum[l];
+    return prefixsum(r)-prefixsum(l);
 }
 static int prefixsum(int idx){
     int sum=0;
