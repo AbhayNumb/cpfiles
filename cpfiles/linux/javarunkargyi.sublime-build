@@ -1,0 +1,7 @@
+{
+    "shell_cmd": "javac '${file}' && java '${file_base_name}' < input.txt > output.txt",
+    "selector": "source.java",
+    "file_regex": "^\\s*File \"(...*?)\", line ([0-9]*)",
+    "path": "/usr/bin:/usr/local/bin:/usr/sbin:/usr/local/sbin:/bin:/sbin:/usr/games:/usr/local/games:/snap/bin",
+    "shell": true
+}
