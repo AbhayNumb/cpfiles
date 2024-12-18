@@ -1,0 +1,8 @@
+{
+    "shell_cmd": "g++-14 '${file}' -o '${file_path}/${file_base_name}' && '${file_path}/${file_base_name}' < input.txt > output.txt",
+    "selector": "source.cpp",
+    "file_regex": "^\\s*File \"(...*?)\", line ([0-9]*)",
+    "path": "/usr/local/bin:/usr/sbin:/usr/bin:/bin:/sbin:/usr/games:/usr/local/games",
+    "shell": true
+}
+
